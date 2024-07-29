@@ -4,31 +4,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Command Server</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
-    {%for message in get_flashed_messages()%}
-        {{message}}
-        <br>
-    {%endfor%}
     <h1>Command Server</h1>
-    <form id="command-form" action="." method="POST">
+    <form method="POST" action="/">
         <input type="text" name="command" placeholder="Enter command">
         <button type="submit">Send</button>
     </form>
-    <!-- <script>
-        const socket = io();
-
-        document.getElementById('command-form').addEventListener('submit', function(event) {
-            event.preventDefault();
-            const command = document.getElementById('command').value;
-            fetch('/send_command', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: 'command=' + command
-            });
-        });
-    </script> -->
+    <div class="files">
+        {%if client_files%}
+            {%for file in client_files%}
+            <a href="/analyse/{{file}}">
+                {{file}}
+            </a>
+            <br>
+            {%endfor%}
+        {%endif%}
+    </div>
+    <div id="messages">
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    <p>{{ message }}</p>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+    <div id="client_updates">
+        <h2>Client Updates</h2>
+        <ul id="updates"></ul>
+    </div>
 </body>
 </html>
